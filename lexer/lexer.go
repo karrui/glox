@@ -29,6 +29,14 @@ func (l *Lexer) readChar() {
 	l.readPosition += 1
 }
 
+// Look at the next character without advancing our position in the input.
+func (l *Lexer) peekChar() byte {
+	if l.readPosition >= len(l.input) {
+		return 0
+	}
+	return l.input[l.readPosition]
+}
+
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
@@ -37,7 +45,7 @@ func (l *Lexer) NextToken() token.Token {
 
 	switch l.ch {
 	case '=':
-		tok = newToken(token.ASSIGN, l.ch)
+		tok = l.makeTwoCharToken('=', token.EQ, token.ASSIGN)
 	case ';':
 		tok = newToken(token.SEMICOLON, l.ch)
 	case '(':
@@ -55,11 +63,11 @@ func (l *Lexer) NextToken() token.Token {
 	case '/':
 		tok = newToken(token.SLASH, l.ch)
 	case '!':
-		tok = newToken(token.BANG, l.ch)
+		tok = l.makeTwoCharToken('=', token.NOT_EQ, token.BANG)
 	case '<':
-		tok = newToken(token.LT, l.ch)
+		tok = l.makeTwoCharToken('=', token.LE, token.LT)
 	case '>':
-		tok = newToken(token.GT, l.ch)
+		tok = l.makeTwoCharToken('=', token.GE, token.GT)
 	case '{':
 		tok = newToken(token.LBRACE, l.ch)
 	case '}':
@@ -113,6 +121,16 @@ func (l *Lexer) skipWhitespace() {
 	// Skip all whitespace characters
 	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
 		l.readChar()
+	}
+}
+
+func (l *Lexer) makeTwoCharToken(expected byte, twoCharType token.TokenType, oneCharType token.TokenType) token.Token {
+	ch := l.ch
+	if l.peekChar() == expected {
+		l.readChar()
+		return token.Token{Type: twoCharType, Literal: string(ch) + string(l.ch)}
+	} else {
+		return newToken(oneCharType, ch)
 	}
 }
 

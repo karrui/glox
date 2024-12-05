@@ -24,8 +24,12 @@ const (
 	BANG     = "!"
 
 	// Comparison operators
-	LT = "<"
-	GT = ">"
+	LT     = "<"
+	GT     = ">"
+	LE     = "<="
+	GE     = ">="
+	EQ     = "=="
+	NOT_EQ = "!="
 
 	// Delimiters
 	COMMA     = ","

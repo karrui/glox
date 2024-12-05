@@ -84,6 +84,11 @@ return true;
 } else {
 return false;
 }
+
+10 == 10;
+10 != 9;
+10 >= 5;
+10 <= 15;
 `
 
 	tests := []struct {
@@ -161,6 +166,24 @@ return false;
 		{token.FALSE, "false"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
+
+		{token.INT, "10"},
+		{token.EQ, "=="},
+		{token.INT, "10"},
+		{token.SEMICOLON, ";"},
+		{token.INT, "10"},
+		{token.NOT_EQ, "!="},
+		{token.INT, "9"},
+		{token.SEMICOLON, ";"},
+
+		{token.INT, "10"},
+		{token.GE, ">="},
+		{token.INT, "5"},
+		{token.SEMICOLON, ";"},
+		{token.INT, "10"},
+		{token.LE, "<="},
+		{token.INT, "15"},
+		{token.SEMICOLON, ";"},
 	}
 
 	l := New(input)
