@@ -35,7 +35,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 	// initialize Statements to array of ast.Statement structs
 	program.Statements = []ast.Statement{}
 
-	for p.curToken.Type != token.EOF {
+	for !p.curTokenIs(token.EOF) {
 		// := syntax
 		// https://go.dev/ref/spec#Short_variable_declarations
 		// Shorthand for regular variable declaration with initializer expressions but no types
