@@ -42,18 +42,22 @@ type LetStatement struct {
 	Value Expression
 }
 
-// Satisfies the Statement interface
-func (ls *LetStatement) statementNode() {}
+type ReturnStatement struct {
+	Token       token.Token // Specifically the token.RETURN token
+	ReturnValue Expression
+}
 
-// Satisfies the Node interface
+func (ls *LetStatement) statementNode() {}
 func (ls *LetStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
 
-// Satisfies the Statement interface
 func (i *Identifier) expressionNode() {}
-
-// Satisfies the Node interface
 func (i *Identifier) TokenLiteral() string {
 	return i.Token.Literal
+}
+
+func (rs *ReturnStatement) statementNode() {}
+func (rs *ReturnStatement) TokenLiteral() string {
+	return rs.Token.Literal
 }
